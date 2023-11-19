@@ -1,44 +1,48 @@
-name: Deploy React App 
-on: 
+name: Deploy React App
+
+on:
   push:
     branches:
-     - master 
-    #paths-ignore: 
-      #- '.github/workflows/*'
-jobs: 
+      - master
+    # paths-ignore:
+    #   - '.github/workflows/*'
+
+jobs:
   test:
-  runs-on: ubuntu-latest 
-  steps: 
-    - name: Get repository code 
-      uses: actions/checkout@v3 
-    - name: Install dependecies 
-      run: npm install
-    - name: Test application 
-      run: npm run test 
-  lint: 
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Test application
+        run: npm run test
+
+  lint:
+    runs-on: ubuntu-latest
     needs: test
-    steps: 
-      - name: Get repository code 
-        uses: actions/checkoutav3 
-      - name: Cache dependencies 
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.nmp
+          path: ~/.npm
           key: node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependecies 
+      - name: Install dependencies
         run: npm ci
-      - name: Lint application 
+      - name: Lint application
         run: npm run lint
-  build: 
-    runs-on: ubuntu-latest 
+
+  build:
+    runs-on: ubuntu-latest
     needs: lint
-    steps: 
-      - name: Get repository code 
-        uses: actions/checkoutav3 
-      - name: Install dependecies 
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install dependencies
         run: npm ci
-      - name: Build application 
+      - name: Build application
         run: npm run build
       - name: Deploy
         run: echo Deploying...
